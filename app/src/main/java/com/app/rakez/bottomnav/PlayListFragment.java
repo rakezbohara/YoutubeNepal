@@ -143,7 +143,7 @@ public class PlayListFragment extends Fragment {
             public void onTaskCompleted(ArrayList<Video> list) {
                 //list is an ArrayList with all video's item
                 //set the adapter to recycler view
-                vAdapter = new VideoAdapter(list, R.layout.yt_row, getActivity().getApplicationContext() );
+                vAdapter = new VideoAdapter(list, R.layout.yt_row, getActivity().getApplicationContext(),getActivity());
                 mRecyclerView.setAdapter(vAdapter);
                 vAdapter.notifyDataSetChanged();
                 progressWheel.setVisibility(View.GONE);
@@ -154,7 +154,7 @@ public class PlayListFragment extends Fragment {
             @Override
             public void onError() {
 
-                getActivity().runOnUiThread(new Runnable() {
+                /*getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         progressWheel.setVisibility(View.GONE);
@@ -163,7 +163,7 @@ public class PlayListFragment extends Fragment {
                                 Toast.LENGTH_SHORT).show();
                         Log.i("YoutubeParser", "Unable to load video's data");
                     }
-                });
+                });*/
             }
         });
     }

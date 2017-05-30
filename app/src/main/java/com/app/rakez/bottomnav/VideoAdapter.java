@@ -20,6 +20,8 @@ package com.app.rakez.bottomnav;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,13 +48,15 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
     private ArrayList<Video> videos;
     private int rowLayout;
     private Context mContext;
+    private FragmentActivity activity;
 
 
-    public VideoAdapter(ArrayList<Video> list, int rowLayout, Context context) {
+    public VideoAdapter(ArrayList<Video> list, int rowLayout, Context context, FragmentActivity activity) {
 
         this.videos = list;
         this.rowLayout = rowLayout;
         this.mContext = context;
+        this.activity = activity;
     }
 
     public void clearData(){
@@ -94,7 +98,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
 
-                Intent intent = YouTubeStandalonePlayer.createVideoIntent((Activity) mContext, "AIzaSyCfXEVWEDKdTK-cDAnOZE3KK8F4PHafOXE",videoId);
+                Intent intent = YouTubeStandalonePlayer.createVideoIntent(activity, "AIzaSyCfXEVWEDKdTK-cDAnOZE3KK8F4PHafOXE",videoId);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
         });

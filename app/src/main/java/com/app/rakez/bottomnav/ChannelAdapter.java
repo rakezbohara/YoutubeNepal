@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.prof.youtubeparser.models.Main;
 
 import java.util.List;
@@ -24,12 +26,14 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.MyViewHo
     private Context mContext;
     private List<ChannelItem> channelList;
     private FragmentActivity activity;
+    ImageLoader imageLoader;
 
 
     public ChannelAdapter(Context mContext, List<ChannelItem> channelList, FragmentActivity activity) {
         this.mContext = mContext;
         this.channelList = channelList;
         this.activity = activity;
+        imageLoader = AppController.getInstance().getImageLoader();
 
     }
 
@@ -45,7 +49,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.MyViewHo
 
         ChannelItem channel = channelList.get(position);
         holder.channelName.setText(channel.getChannelName());
-        holder.imgId.setImageResource(channel.getImgId());
+        holder.imgId.setImageUrl("http://192.168.1.5/nepalyt/"+channel.getImgId(),imageLoader);
 
         holder.imgId.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,11 +74,11 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView channelName;
-        public ImageButton imgId;
+        public NetworkImageView imgId;
         public MyViewHolder(View view) {
             super(view);
             channelName = (TextView) view.findViewById(R.id.textView);
-            imgId = (ImageButton) view.findViewById(R.id.imageButton);
+            imgId = (NetworkImageView) view.findViewById(R.id.imageButton);
         }
     }
 }

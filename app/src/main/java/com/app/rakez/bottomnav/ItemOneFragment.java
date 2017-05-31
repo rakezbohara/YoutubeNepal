@@ -20,27 +20,45 @@
 
 package com.app.rakez.bottomnav;
 
+import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.nio.channels.Channel;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemOneFragment extends Fragment {
 
     RecyclerView channelRV;
     ArrayList<ChannelItem> channelList=new ArrayList<>();
     ChannelAdapter channelAdapter;
+    List<String> id = new ArrayList<>();
+    List<String> channelIcon = new ArrayList<>();
+    List<String> channelName = new ArrayList<>();
+    List<String> channelId = new ArrayList<>();
 
     public static ItemOneFragment newInstance() {
         ItemOneFragment fragment = new ItemOneFragment();
@@ -62,18 +80,76 @@ public class ItemOneFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         channelRV = (RecyclerView) getActivity().findViewById(R.id.home_rv);
+        makeChannelRequest();
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 3);
         channelRV.setLayoutManager(mLayoutManager);
         channelRV.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(10), true));
         channelRV.setItemAnimator(new DefaultItemAnimator());
-        channelList.add(new ChannelItem(R.mipmap.ic_launcher_round,"Busy Box","2054dghyfi546"));
-        channelList.add(new ChannelItem(R.mipmap.ic_launcher_round,"Free Box","2054dghyfi546"));
-        channelList.add(new ChannelItem(R.mipmap.ic_launcher_round,"New Box","2054dghyfi546"));
-        channelList.add(new ChannelItem(R.mipmap.ic_launcher_round,"Busy Box","2054dghyfi546"));
-        channelList.add(new ChannelItem(R.mipmap.ic_launcher_round,"Busy Box","2054dghyfi546"));
         channelAdapter = new ChannelAdapter(getActivity().getApplicationContext(),channelList,getActivity());
         channelRV.setAdapter(channelAdapter);
 
+
+    }
+    private void makeChannelRequest(){
+        final ProgressDialog pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Loading");
+        pDialog.show();
+
+
+
+
+        JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, "http://192.168.1.5/nepalyt/channellistJson.php", null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+
+                channelId.clear();
+                channelName.clear();
+                channelIcon.clear();
+                id.clear();
+                Log.d("size of the","Sizw is rakjsdifns response "+response.length());
+                for(int i = 0;i<response.length();i++){
+                    try {
+                        JSONObject table = (JSONObject) response.get(i);
+                        id.add(table.getString("id"));
+                        channelIcon.add(table.getString("icon_src"));
+                        channelName.add(table.getString("channel_name"));
+                        channelId.add(table.getString("channel_id"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                pDialog.hide();
+                pDialog.dismiss();
+                prepareData();
+                //swipeRefreshLayout.setRefreshing(false);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pDialog.hide();
+                pDialog.dismiss();
+                /*swipeRefreshLayout.setRefreshing(false);
+                View view = findViewById(R.id.drawer_layout);
+                sb = Snackbar.make(view, "Cannot connect to network", Snackbar.LENGTH_INDEFINITE);
+                sb.setAction("Action", null);
+                sb.show();*/
+
+            }
+        });
+        AppController.getInstance().addToRequestQueue(req);
+
+
+    }
+
+    public void prepareData(){
+
+        for(int i = 0 ; i < id.size() ; i++){
+            channelList.add(new ChannelItem(channelIcon.get(i),channelName.get(i),channelId.get(i)));
+        }
+        channelAdapter.notifyDataSetChanged();
 
     }
 

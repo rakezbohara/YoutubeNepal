@@ -5,21 +5,21 @@ package com.app.rakez.bottomnav;
  */
 
 public class ChannelItem {
-    private int imgId;
+    private String imgId;
     private String channelName;
     private String channelId;
 
-    public ChannelItem(int imgId, String channelName, String channelId) {
+    public ChannelItem(String imgId, String channelName, String channelId) {
         this.imgId = imgId;
         this.channelName = channelName;
         this.channelId = channelId;
     }
 
-    public int getImgId() {
+    public String getImgId() {
         return imgId;
     }
 
-    public void setImgId(int imgId) {
+    public void setImgId(String imgId) {
         this.imgId = imgId;
     }
 

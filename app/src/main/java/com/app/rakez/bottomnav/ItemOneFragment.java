@@ -25,8 +25,6 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -79,7 +77,7 @@ public class ItemOneFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        channelRV = (RecyclerView) getActivity().findViewById(R.id.home_rv);
+        channelRV = (RecyclerView) getActivity().findViewById(R.id.type1);
         makeChannelRequest();
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 3);
         channelRV.setLayoutManager(mLayoutManager);
@@ -98,7 +96,7 @@ public class ItemOneFragment extends Fragment {
 
 
 
-        JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, "http://192.168.1.10/nepalyt/channellistJson.php", null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, "http://neptube.codesastra.com/nepalyt/channellistJson.php?type=1", null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
 

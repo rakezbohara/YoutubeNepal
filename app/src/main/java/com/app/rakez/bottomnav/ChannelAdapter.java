@@ -50,7 +50,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.MyViewHo
 
         ChannelItem channel = channelList.get(position);
         holder.channelName.setText(channel.getChannelName());
-        holder.imgId.setImageUrl("http://192.168.1.10/nepalyt/"+channel.getImgId(),imageLoader);
+        holder.imgId.setImageUrl("http://neptube.codesastra.com/nepalyt/"+channel.getImgId(),imageLoader);
         final PlayListFragment ldf = new PlayListFragment ();
         Bundle args = new Bundle();
         args.putString("ChannelId", channel.getChannelId());

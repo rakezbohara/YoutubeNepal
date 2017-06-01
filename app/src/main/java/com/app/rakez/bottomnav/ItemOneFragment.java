@@ -98,7 +98,7 @@ public class ItemOneFragment extends Fragment {
 
 
 
-        JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, "http://192.168.1.5/nepalyt/channellistJson.php", null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, "http://192.168.1.10/nepalyt/channellistJson.php", null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
 

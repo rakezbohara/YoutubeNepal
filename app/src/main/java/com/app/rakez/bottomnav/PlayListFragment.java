@@ -49,6 +49,8 @@ public class PlayListFragment extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ProgressWheel progressWheel;
 
+    public String channelId;
+
     public static PlayListFragment newInstance() {
         PlayListFragment fragment = new PlayListFragment();
         return fragment;
@@ -64,6 +66,9 @@ public class PlayListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_play_list, container, false);
+        String value = getArguments().getString("ChannelId");
+        channelId = value;
+        Log.d("Tag",value);
         return view;
     }
 
@@ -135,7 +140,7 @@ public class PlayListFragment extends Fragment {
 
         Parser parser = new Parser();
         //set Channel ID, number of result to show, Broswer API Key
-        String url = parser.generateRequest("UCxTRFQ6TjxV4JSbJoaZIi5A", 20, "AIzaSyCfXEVWEDKdTK-cDAnOZE3KK8F4PHafOXE");
+        String url = parser.generateRequest(channelId, 20, "AIzaSyCfXEVWEDKdTK-cDAnOZE3KK8F4PHafOXE");
         parser.execute(url);
         parser.onFinish(new Parser.OnTaskCompleted() {
             //what to do when the parsing is done

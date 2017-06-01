@@ -1,6 +1,7 @@
 package com.app.rakez.bottomnav;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +50,11 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.MyViewHo
 
         ChannelItem channel = channelList.get(position);
         holder.channelName.setText(channel.getChannelName());
-        holder.imgId.setImageUrl("http://192.168.1.5/nepalyt/"+channel.getImgId(),imageLoader);
+        holder.imgId.setImageUrl("http://192.168.1.10/nepalyt/"+channel.getImgId(),imageLoader);
+        final PlayListFragment ldf = new PlayListFragment ();
+        Bundle args = new Bundle();
+        args.putString("ChannelId", channel.getChannelId());
+        ldf.setArguments(args);
 
         holder.imgId.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +65,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.MyViewHo
                 //String tableNo = albumList.get(holder.getAdapterPosition()).getName();
 
                 FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, PlayListFragment.newInstance());
+                transaction.replace(R.id.frame_layout, ldf);
                 transaction.commit();
 
             }
